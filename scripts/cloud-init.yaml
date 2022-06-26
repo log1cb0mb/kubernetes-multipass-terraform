@@ -3,6 +3,9 @@ bootcmd:
 - "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
 - "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
 - "wget -nv https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_${image}/Release.key -O- | apt-key add -"
+%{~ if cks_killer_enable && role != "bastion" }
+- "curl -s https://falco.org/repo/falcosecurity-3672BA8F.asc | apt-key add -"
+%{ endif }
 
 disable_root: false
 users:
@@ -22,7 +25,6 @@ package_update: true
 package_upgrade: true
 # package_reboot_if_required: true
 packages:
-  # Update the apt package index and install packages needed to use the Docker and Kubernetes apt repositories over HTTPS
   - apt-transport-https
   - ca-certificates
   - curl
@@ -40,15 +42,23 @@ packages:
   - kubelet=${k8s_version}-00
   - kubeadm=${k8s_version}-00
   - kubectl=${k8s_version}-00
+%{~ if cks_killer_enable && role != "bastion" }
+  - falco
+  - apparmor-profiles
+%{ endif }
 
 apt:
   sources:
-      docker:
-          source: "deb https://download.docker.com/linux/ubuntu xenial stable"
-      kubernetes:
-          source: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
-      podman:
-          source: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${image}/ /"
+    docker:
+      source: "deb https://download.docker.com/linux/ubuntu xenial stable"
+    kubernetes:
+      source: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+    podman:
+      source: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${image}/ /"
+%{~ if cks_killer_enable && role != "bastion" }
+    falco:
+      source: "deb https://download.falco.org/packages/deb-dev stable main"
+%{ endif }
 
 # Let iptables see bridged traffic
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
@@ -178,3 +188,7 @@ runcmd:
  - [ systemctl, enable, restore-etcd.path ]
  - [ systemctl, start, --no-block, restore-etcd.path ]
 %{ endif ~}
+%{~ if cks_killer_enable && role != "bastion" }
+ - [ systemctl, enable, falco ]
+ - [ systemctl, start, --no-block, falco ]
+%{ endif }

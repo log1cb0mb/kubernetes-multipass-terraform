@@ -74,7 +74,7 @@ servers:
 ## TODO
 
 - Update readme
-- Install Falco and AppArmor
+- ~~Install Falco and AppArmor~~
 - Change packages arch to be more general instead of ARM
 - Setup gviser/runsc
 - Setup docker registry on bastion host
