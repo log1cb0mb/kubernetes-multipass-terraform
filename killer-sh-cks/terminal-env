@@ -1,0 +1,41 @@
+cat >> ~/.mybashrc <<EOF
+alias nano="nano -cmilET4"
+alias k="kubectl"
+alias kg="kubectl get"
+alias kgd="kubectl get deploy"
+alias kgp="kubectl get po"
+alias kga="kubectl get all"
+alias kn="kubectl config set-context --current --namespace"
+alias kccc="kubectl config current-context"
+alias kcgc="kubectl config get-contexts"
+alias kcuc="kubectl config use-context"
+alias kd="kubectl describe"
+alias kcv="kubectl config view"
+alias kaf="kubectl apply -f"
+alias ktmp="kubectl run tmp --restart=Never --rm -it --image=busybox --"
+alias kdr='kubectl run --dry-run=client -o yaml'
+alias ktty="kubectl exec --stdin --tty"
+alias cl="clear"
+export do="--dry-run=client -o yaml"
+export f="--grace-period=0 --force"
+export ETCDCTL_API=3
+source <(kubectl completion bash)
+# complete -o default -F __start_kubectl k
+complete -F __start_kubectl k
+echo "bash loaded"
+EOF
+source ~/.mybashrc
+mv ~/.vimrc ~/.vimrc_
+cat >> ~/.vimrc <<EOF
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set number
+set softtabstop=2
+set backspace=eol,indent,start
+set ruler
+set foldmethod=indent
+set nofoldenable
+set pastetoggle=<F2>
+EOF
+clear
