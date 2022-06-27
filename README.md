@@ -84,6 +84,12 @@ terraform init
 terraform apply
 ```
 
+### When tired or free up precious little resources on system or just start over
+
+```bash
+terraform destroy
+```
+
 ## CKS Killer-Shell
 
 The data from recent CKS 1.23 environment already included under `killer-sh-cks` which is used to bring up Kubernetes clusters and restore environment.
