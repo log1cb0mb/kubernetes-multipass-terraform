@@ -1,5 +1,5 @@
 locals {
-  kube_pki = yamldecode(file("cluster-data/pki.yaml")).pki
+  kube_pki = fileexists("cluster-data/pki.yaml") ? yamldecode(file("cluster-data/pki.yaml")).pki : {}
   cluster_certs = {
     for clusters, certs in local.kube_pki : clusters => certs
     if clusters == var.cluster_name
