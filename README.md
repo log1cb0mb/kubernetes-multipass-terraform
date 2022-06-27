@@ -8,11 +8,14 @@ The logic used for bringing up kubernetes clusters running CKS Killer Shell envi
 
 - Terraform
 - Multipass
-- Python
+- _Other stuff that might popup in errors. I am sure you'll figure it out...I believe in you!_
 
-## Required config sample
+## Buckle up!
+
+Create `config.yaml` declaring cluster topology. Specify instances spec as per requirement.
 
 ```yaml
+##Config Sample
 environment:
   k8s_version: "1.23.1"
   cks_killer_enable: true # Bring up CKS Killer-sh kubernetes environment
@@ -69,15 +72,30 @@ servers:
     domain_name: whatever
 ```
 
-## CKS Killer Shell Instructions
+### Liven up Terraform
+
+```bash
+terraform init
+```
+
+### Make magic happen
+
+```bash
+terraform apply
+```
+
+## CKS Killer-Shell
+
+The data from recent CKS 1.23 environment already included under `killer-sh-cks` which is used to bring up Kubernetes clusters and restore environment.
+
+Stayed Tuned: Will add instructions later regarding how to pull up environment data and use that instead (_or NOT..we'll see..I am busy!_)
 
 ## TODO
 
-- Update readme
-- ~~Install Falco and AppArmor~~
-- Change packages arch to be more general instead of ARM
+- Update CKS Killer-shell blah blah
+- Fix pod network connectivity issue with killer-sh environment (this one's a biyatch!)
+- Change packages arch to be more general instead of just ARM
 - Setup gviser/runsc
 - Setup docker registry on bastion host
 - Load private registry images used in environment
-- Fix pod network connectivity issue with killer-sh environment
-- Add feature for HA control plane
+- Add feature for HA control plane (fuhgedaboutit)
