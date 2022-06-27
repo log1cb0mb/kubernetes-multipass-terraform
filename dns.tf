@@ -11,5 +11,5 @@ resource "null_resource" "etc_hosts" {
     EOT
     interpreter = ["bash", "-c"]
   }
-  depends_on = [module.multipass]
+  depends_on = [module.multipass, null_resource.init_controllers, null_resource.join_workers, null_resource.restore_cluster]
 }
