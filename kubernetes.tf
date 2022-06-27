@@ -14,8 +14,10 @@ resource "null_resource" "init_controllers" {
     sh -c 'sudo kubeadm init --kubernetes-version=${local.environment.k8s_version}'
     multipass exec ${self.triggers.controller_name} -- \
     sh -c 'sudo cat $KUBECONFIG' > ./scripts/init/${self.triggers.cluster_name}.yaml
-    multipass exec ${self.triggers.controller_name} -- \
-    sh -c 'sudo kubectl apply -f https://cloud.weave.works/k8s/net?k8s-version=${local.environment.k8s_version}'
+    if [ ${local.environment.restore_cluster} != true ] ; then
+      multipass exec ${self.triggers.controller_name} -- \
+      sh -c 'sudo kubectl apply -f https://cloud.weave.works/k8s/net?k8s-version=${local.environment.k8s_version}'
+    fi
     EOT
     interpreter = ["bash", "-c"]
   }
@@ -47,5 +49,5 @@ resource "null_resource" "join_workers" {
     interpreter = ["bash", "-c"]
     environment = { KUBECONFIG = file("./scripts/init/${self.triggers.cluster_name}.yaml") }
   }
-  depends_on = [null_resource.init_controllers]
+  depends_on = [module.multipass, null_resource.init_controllers]
 }

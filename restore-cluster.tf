@@ -1,15 +1,19 @@
-# resource "null_resource" "restore_cluster" {
-#   count = local.environment.restore_cluster ? 1 : 0
-# #   triggers = {
-# #     kubeconfig = local.kubeconfig
-# #   }
+resource "null_resource" "restore_cluster" {
+  for_each = {
+    for controllers, values in local.instances : controllers => values.hostname
+    if values.role == "controller" && local.environment.restore_cluster == true
+  }
+  triggers = {
+    controller_name = each.key
+    cluster_name    = local.server[each.key].cluster_name
+  }
 
-#   provisioner "local-exec" {
-#     command     = <<-EOT
-#     multipass transfer cluster-data/cluster1-db.tar.gz cluster1-master1:cluster1-db.tar.gz
-#     multipass transfer cluster-data/cluster2-db.tar.gz cluster2-master1:cluster2-db.tar.gz
-#     EOT
-#     interpreter = ["bash", "-c"]
-#   }
-#   depends_on = [null_resource.join_workers]
-# }
+  provisioner "local-exec" {
+    command     = <<-EOT
+    multipass transfer cluster-data/${self.triggers.cluster_name}.tar.gz \
+    ${self.triggers.controller_name}:${self.triggers.cluster_name}.tar.gz
+    EOT
+    interpreter = ["bash", "-c"]
+  }
+  depends_on = [module.multipass, null_resource.join_workers]
+}

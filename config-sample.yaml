@@ -1,6 +1,6 @@
 environment:
   k8s_version: "1.23.1"
-  restore_cluster: true # Bring up existing kubernetes cluster (Ubuntu/Debian)
+  restore_cluster: false # Bring up existing kubernetes cluster (Ubuntu/Debian)
   ssh_key: "<ssh public key for instances>"
 servers:
   # Instances naming mutually exclusive to restore_cluster property
