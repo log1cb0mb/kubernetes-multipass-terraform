@@ -1,0 +1,55 @@
+environment:
+  k8s_version: "1.23.1"
+  cks_killer_enable: true # Bring up CKS Killer-sh kubernetes environment
+  ssh_key: "<ssh public key for instances>"
+servers:
+  # Instances naming mutually exclusive to cks_killer_enable  environment
+  # For self-manage instances/kubernetes environment
+  # (cks_killer_enable not defined or false), instance names can be any
+  cluster1-master1:
+    cluster_name: cluster1
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster1-worker1:
+    cluster_name: cluster1
+    role: worker
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster1-worker2:
+    cluster_name: cluster1
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster2-master1:
+    cluster_name: cluster2
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster2-worker1:
+    cluster_name: cluster2
+    role: worker
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  terminal:
+    role: bastion
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+
