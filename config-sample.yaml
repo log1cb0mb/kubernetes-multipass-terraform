@@ -1,0 +1,57 @@
+environment:
+  k8s_version: "1.23.1"
+  restore_cluster: true # Bring up existing kubernetes cluster (Ubuntu/Debian)
+  ssh_key: "<ssh public key for instances>"
+servers:
+  # Instances naming mutually exclusive to restore_cluster property
+  # WHen restoring existing cluster, instances naming should match
+  # exactly the cluster nodes being restored
+  # When restore_cluster not defined or false, instance names can be any
+  # for new/empty clusters
+  cluster1-master1:
+    cluster_name: cluster1
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster1-worker1:
+    cluster_name: cluster1
+    role: worker
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster1-worker2:
+    cluster_name: cluster1
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster2-master1:
+    cluster_name: cluster2
+    role: controller
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  cluster2-worker1:
+    cluster_name: cluster2
+    role: worker
+    image: 20.04
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+  terminal:
+    role: bastion
+    cpu: 2
+    mem: 2G
+    disk: 5G
+    domain_name: whatever
+

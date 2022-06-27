@@ -1,0 +1,11 @@
+pki:
+  cluster1:
+      ca_cert: |
+        <base64encoded CA cert>
+      ca_key: |
+        <base64encoded CA key>
+  cluster2:
+      ca_cert: |
+        <base64encoded CA cert>
+      ca_key: |
+        <base64encoded CA key>
